@@ -3,12 +3,13 @@
       app.controller("myCtrl",function($scope, $http){
         $scope.requiredData = [];
         $scope.showFilters = 0;
-        $scope.searchDropdown = ["title", "level"];
+        $scope.searchDropdown = ["title", "level", "language"];
+        $scope.queryBy = "title";
 
-        $scope.levels = ["Easy", "Medium", "Hard"];
-        $scope.languages = ["C", "GNU C++", "GNU C++11", "Python", "Java 7", "Java 8"];
-        $scope.selectedLevel = "Easy";
-        $scope.selectedLanguage = "C";
+        // $scope.levels = ["Easy", "Medium", "Hard"];
+        // $scope.languages = ["C", "GNU C++", "GNU C++11", "Python", "Java 7", "Java 8"];
+        // $scope.selectedLevel = "Easy";
+        // $scope.selectedLanguage = "C";
         $scope.status = "";
 
         $scope.compiler_image = {};
@@ -93,13 +94,12 @@
                 var objectStore = evt.currentTarget.result.createObjectStore(
                            "submissions", { keyPath: "id", autoIncrement: false });
                 objectStore.createIndex("compiler_status", "compiler_status", { unique: false });
-                objectStore.createIndex("language", "language", { unique: false });
+                objectStore.createIndex('language', 'language', {unique:false});                
                 objectStore.createIndex("level", "level", { unique: false });
                 objectStore.createIndex("rating", "rating", { unique: false });
                 objectStore.createIndex("users_attempted", "users_attempted", { unique: false });
                 objectStore.createIndex("source_code", "source_code", { unique: false });
                 objectStore.createIndex("title", "title", { unique: false });
-                objectStore.createIndex('myindex', ['level', 'language', 'compiler_status'], {unique:false});
                 loadData();    
 
             };
@@ -112,10 +112,10 @@
             for (i in submissionData) {
               console.log(i)
               objectStore.add({compiler_status:submissionData[i].compiler_status, id:parseInt(submissionData[i].id, 10), 
-                language:$scope.compiler_image[submissionData[i].language], level:submissionData[i].metadata.level, 
+                language: submissionData[i].language, level:submissionData[i].metadata.level, 
                 rating:submissionData[i].metadata.rating, users_attempted:submissionData[i].metadata.users_attempted, 
-                source_code:submissionData[i].source_code, title:submissionData[i].title, 
-                myindex: [submissionData[i].metadata.level, submissionData[i].language, submissionData[i].compiler_status]
+                source_code:submissionData[i].source_code, title:submissionData[i].title
+                
               });
             }
         }
@@ -124,21 +124,21 @@
                     var transaction = db.transaction("submissions", IDBTransaction.READ_WRITE);
                     var objectStore = transaction.objectStore("submissions");
 
-                    var lowerBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status];
-                    var upperBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status+"z"];
+                    // var lowerBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status];
+                    // var upperBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status+"z"];
 
-                    console.log(lowerBound,upperBound);
+                    //console.log(lowerBound,upperBound);
                     var tmp = [];
                     //$scope.requiredData = [];
-                    if($scope.showFilters){
-                        console.log("in if statement");
-                        var request = objectStore.index("myindex").openCursor(IDBKeyRange.bound(lowerBound, upperBound));
+                    // if($scope.showFilters){
+                    //     console.log("in if statement");
+                    //     var request = objectStore.index("myindex").openCursor(IDBKeyRange.bound(lowerBound, upperBound));
 
-                    }
-                    else{
-                        var request = objectStore.index("compiler_status").openCursor(IDBKeyRange.bound($scope.status, $scope.status+"z"));
+                    // }
+                    // else{
+                    var request = objectStore.index("compiler_status").openCursor(IDBKeyRange.bound($scope.status, $scope.status+"z"));
 
-                    }
+                    // }
                     request.onsuccess = function(evt) {  
                         var cursor = evt.target.result;  
                         // console.log(cursor.value);
