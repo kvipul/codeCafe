@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+   <title>Code Cafe</title>
+   <link rel="stylesheet" type="text/css" href="style.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+
+   <script src="script.js"></script>
+</head>
+
+<body>
+   <div ng-app="codeCafe" ng-controller="myCtrl">
+
+      <div style="font-weight:900;background-color: white;">
+         <img src="http://www.codestudents.co.uk/assets/img/cafe-logo.png" alt="Code Cafe" width="10%" height="10%">
+         <span style="font-size:40px; color:blue;word-wrap: break-word;">
+            C<span style="color:green">ode</span> 
+            C<span style="color:green">afe</span>
+         </span>
+         <span style="font-size:20px;color:#ABBBBB">--code hub with states!</span>
+         <button ng-click="fetchData()">Load Data</button>
+      </div>
+
+      <!-- <span style="font-size: 11px !important; color: #aaaaaa;">Hello</span> -->
+      <hr>
+
+      <div id="content">
+            <div class="left w80 borderB">
+               <!-- <div w3-include-html="loadDataTodb.html"></div> -->
+               <div class="ScrollStyle">
+                    <div>
+                    
+                        <button ng-model="showFilters" ng-click="showFilters=!showFilters;fetchData()"> 
+                            <span ng-hide="showFilters">Use Filters</span>  
+                            <span ng-show="showFilters">Hide Filter Options</span>  
+                        </button>
+                        <div ng-show="showFilters">
+                            <select ng-model="selectedLevel" ng-options="x for x in levels"></select>
+                            <select ng-model="selectedLanguage" ng-options="x for x in languages"></select>
+                            <button ng-click="fetchData()">Search</button>
+                        </div>
+                    </div>
+                  <div ng-repeat="submission in requiredData track by submission.id">
+                     <div class="card">
+                        <div>
+                           <img class="left" src="https://images.alphacoders.com/511/511052.jpg" alt="Code Cafe" width="50" height="50">
+                           <span style="font-size:20px; color:blue;">{{submission.title}}</span>
+                           
+                        </div><br>
+                        <p class="test2">{{submission.source_code}}</p>
+                        <div>Submission id : {{submission.id}}</div>
+                        <div>Submission id : {{submission.compiler_status}}</div>
+                        
+                     </div><br>
+
+                     
+                  </div>
+               </div>
+               
+               
+               <br>
+               
+
+
+            </div>
+
+
+            <!-- <div class="left"><hr width="1" size="500"></div> -->
+
+
+            <div class="left w20 borderB">
+               <div class="cardHead">Filter by Status</div>
+               <div>
+                  <br>
+                  <input type="radio" ng-model="status" name="status" value="Accepted" checked>Accepted<br>
+                  <input type="radio" ng-model="status" name="status" value="Skipped">Skipped<br>
+                  <input type="radio" ng-model="status" name="status" value="Memory">Memory / Time limit exceeded<br>
+                  <input type="radio" ng-model="status" name="status" value="Runtime" >Runtime / Compilation error<br>
+                  <input type="radio" ng-model="status" name="status" value="Wrong Answer">Wrong Answer<br><br>
+               </div>
+               <div class="cardHead">Statical Analysis</div>
+               <ul>
+                  <li>Top 5 Languages Used:
+                     <ul>
+                        <li>C</li>
+                        <li>C++</li>
+                        <li>Python</li>
+                        <li>Java 7</li>
+                        <li>Java 8</li>
+                     </ul> 
+                  </li>
+                  <li>Top-2 Submissions Attempted:
+                     <ul>
+                        <li>1</li>
+                        <li>2</li>
+                     </ul> 
+                  </li>
+                  <li>Number of Submissions per level:
+                     <ul>
+                        <li>Easy</li>
+                        <li>Medium</li>
+                        <li>Hard</li>
+                     </ul> 
+                  </li>
+                  <li>Total Submissions</li>
+               </ul>
+            </div>
+       
+        
+      </div>
+   </div>
+
+
+ 
+
+</body>
+</html>
