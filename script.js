@@ -1,5 +1,5 @@
 //var submissions = [];
-      var app = angular.module("codeCafe", []);
+      var app = angular.module("codeCafe", ['angularUtils.directives.dirPagination']);
       app.controller("myCtrl",function($scope){
         $scope.requiredData = [];
         $scope.showFilters = 0;
@@ -8,7 +8,7 @@
         $scope.languages = ["C", "GNU C++", "GNU C++11", "Python", "Java 7", "Java 8"];
         $scope.selectedLevel = "Easy";
         $scope.selectedLanguage = "C";
-        $scope.status = "Accepted";
+        $scope.status = "";
 
          var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
         var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
@@ -122,6 +122,7 @@
                   
 
               };
+              //eventFire(document.getElementById('Accepted'), 'click');
           }
          $scope.fetchData = function () {
                     //console.log("vipul");
@@ -164,10 +165,21 @@
                             // console.log(window.JSON.parse(JSON.stringify(myFirstObject))); 
                             console.log($scope.requiredData);   
                             console.log("No more entries!");  
+                            eventFire(document.getElementById($scope.status), 'click');
                         }  
                     } 
                     //$scope.requiredData = tmp;
-            };             
+            }; 
+        function eventFire(el, etype){
+            console.log("radio clicked");
+          if (el.fireEvent) {
+            el.fireEvent('on' + etype);
+          } else {
+            var evObj = document.createEvent('Events');
+            evObj.initEvent(etype, true, false);
+            el.dispatchEvent(evObj);
+          }
+        }            
          $scope.fetchData2 = function(){               
                $scope.requiredData = submissionData; 
                console.log($scope.requiredData);        
