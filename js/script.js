@@ -3,14 +3,20 @@
       app.controller("myCtrl",function($scope, $http){
         $scope.requiredData = [];
         $scope.showFilters = 0;
+        $scope.showProgress = 1;
         $scope.searchDropdown = ["title", "level", "language"];
         $scope.queryBy = "title";
 
+        $scope.topUsedLanguage = [];
+        $scope.getTopUsedLanguage = 1;
+
+        console.log($scope.showProgress,"progress initialization");
+        document.getElementById("content").style.display = "none";
         // $scope.levels = ["Easy", "Medium", "Hard"];
         // $scope.languages = ["C", "GNU C++", "GNU C++11", "Python", "Java 7", "Java 8"];
         // $scope.selectedLevel = "Easy";
         // $scope.selectedLanguage = "C";
-        $scope.status = "";
+        $scope.status = "Accepted";
 
         $scope.compiler_image = {};
         $http.get('compiler_image.json').success(function(response){
@@ -18,16 +24,18 @@
             for (i in response){
                 lng = response[i].language;
                 $scope.compiler_image[response[i].language]= response[i].icon;
+                $scope.topUsedLanguage.push({language:response[i].language, count:0});
 
             }
             activate();
             console.log($scope.compiler_image);
+            console.log($scope.topUsedLanguage);
 
         });
 
-        function getImg(language){
 
-        }
+
+        
         
 
          var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
@@ -38,7 +46,7 @@
             window.alert("Your browser doesn't support a stable version of IndexedDB.")
          }
          
-         const employeeData = [];
+      
 
          var submissionData = [] ;
         //activate();
@@ -76,13 +84,20 @@
               
          });
         function initDb() {
-
+            //$scope.showProgress = 0;
             var request = indexedDB.open("newDatabase", 1);  
             request.onsuccess = function (evt) {
               db = request.result; 
               console.log("vipul");
               console.log(submissionData)
-              console.log(db);                                                           
+              console.log(db);     
+                $scope.showProgress = 0;
+                console.log($scope.showProgress,"progress bar");
+                document.getElementById("loader").style.display = "none";
+                document.getElementById("content").style.display = "inline";
+                
+
+
             };
 
             request.onerror = function (evt) {
@@ -100,9 +115,12 @@
                 objectStore.createIndex("users_attempted", "users_attempted", { unique: false });
                 objectStore.createIndex("source_code", "source_code", { unique: false });
                 objectStore.createIndex("title", "title", { unique: false });
-                loadData();    
+                loadData();  
+                
+
 
             };
+            
           
         }
         function cacheData(){
@@ -120,9 +138,37 @@
             }
         }
          $scope.fetchData = function () {
- 
                     var transaction = db.transaction("submissions", IDBTransaction.READ_WRITE);
                     var objectStore = transaction.objectStore("submissions");
+                    //document.getElementById("loader").style.display = "none";
+                    if($scope.getTopUsedLanguage){
+                        var count=0;
+                        var index = objectStore.index("language");
+                        // console.log(request);
+                        for(i in $scope.topUsedLanguage){
+                            count=0;
+                            request = index.openCursor(IDBKeyRange.only($scope.topUsedLanguage[i].language));
+                            request.onsuccess = function(evt){
+                                cursor = evt.target.result;
+                                if (cursor) {  
+                                    $scope.topUsedLanguage[i].count+=1;                         
+                                    cursor.continue();  
+                                }  
+                                else {  
+                                    // $scope.requiredData = tmp;
+                                    // console.log(window.JSON.parse(JSON.stringify(myFirstObject))); 
+                                    console.log( $scope.topUsedLanguage[i].count);   
+                                    console.log("No more entries!");  
+                                    eventFire(document.getElementById($scope.status), 'click');
+                                }  
+
+                            }
+
+                        }
+                        $scope.getTopUsedLanguage = 0;
+                    }
+ 
+                    
 
                     // var lowerBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status];
                     // var upperBound = [$scope.selectedLevel, $scope.selectedLanguage, $scope.status+"z"];
@@ -139,9 +185,13 @@
                     var request = objectStore.index("compiler_status").openCursor(IDBKeyRange.bound($scope.status, $scope.status+"z"));
 
                     // }
+                    // var count = request.result.count();
+                    // count.onsuccess = function() {
+                    //     console.log(count.result);
+                    // }
                     request.onsuccess = function(evt) {  
                         var cursor = evt.target.result;  
-                        // console.log(cursor.value);
+                        //console.log(evt.target.result.count());
                         if (cursor) {  
                              console.log(cursor.value);
                             tmp = tmp.concat(cursor.value);                          

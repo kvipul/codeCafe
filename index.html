@@ -13,118 +13,113 @@
 
 <body>
     <div ng-app="codeCafe" ng-controller="myCtrl">
-        <div style="font-weight:900;background-color: white;">
-        <img src="http://www.codestudents.co.uk/assets/img/cafe-logo.png" alt="Code Cafe" width="10%" height="20%">
-        <span style="font-size:40px; color:blue;word-wrap: break-word;">
-            C<span style="color:green">ode</span> 
-            C<span style="color:green">afe</span>
-        </span>
-        <span style="font-size:20px;color:#ABBBBB">--code hub with states!</span>
-        <button ng-click="deleteIndexedDb()">Refresh Data</button>
-    </div>
-
-    <hr>
-
-    <div id="content">
-        <div class="left w80 ">
-            <div>
-                <input ng-model="query[queryBy]" />
-                <select ng-model="queryBy" ng-options="x for x in searchDropdown" value="x"></select>
+        <div id="loader"></div>
+        <div id="content">
+            <div style="font-weight:900;background-color: white;" id="headContent">
+                <img src="http://www.codestudents.co.uk/assets/img/cafe-logo.png" alt="Code Cafe" width="10%" height="20%">
+                <span style="font-size:40px; color:blue;word-wrap: break-word;">
+                    C<span style="color:green">ode</span> 
+                    C<span style="color:green">afe</span>
+                </span>
+                <span style="font-size:20px;color:#ABBBBB">--code hub with states!</span>
+                <button ng-click="deleteIndexedDb()">Refresh Data</button>
             </div>
-            <!-- <div>                    
-                <button ng-model="showFilters" ng-click="showFilters=!showFilters;fetchData()"> 
-                    <span ng-hide="showFilters">Use Filters</span>  
-                    <span ng-show="showFilters">Hide Filter Options</span>  
-                </button>
-                <div ng-show="showFilters">
-                    <select ng-model="selectedLevel" ng-options="x for x in levels"></select>
-                    <select ng-model="selectedLanguage" ng-options="x for x in languages"></select>
-                    <button ng-click="fetchData()">Search</button>
-                </div>
-            </div> -->
+
             <hr>
-            <div class="ScrollStyle borderB">
-                <div>
-                    <ul>
-                        <li dir-paginate="submission in requiredData | filter:query| itemsPerPage: 10" pagination-id="submission">
-                            <div class="card">
-                                <div>
-                                   <!-- <img class="left" src="https://images.alphacoders.com/511/511052.jpg" alt="Code Cafe" width="50" height="50"> -->
-                                   <img class="left" src="{{compiler_image[submission.language]}} " alt="Code Cafe" width="50" height="50">
 
-                                   <span style="font-size:20px; color:blue;">{{submission.title}}</span>
-                                   
-                                </div><br>
-                                <p class="test2">{{submission.source_code}}</p>
-                                <div>Submission id : {{submission.id}}</div>
-                                <div>Submission status : {{submission.compiler_status}}</div> {{submission.language}}                  
-                            </div><br>
-                        </li>
-                    </ul>
-                    <dir-pagination-controls pagination-id="submission"></dir-pagination-controls>
-                </div>                     
+            <div id="mainContent">
+                <div class="left w80 ">
+                    <div>
+                        <input ng-model="query[queryBy]" />
+                        <select ng-model="queryBy" ng-options="x for x in searchDropdown" value="x"></select>
+                    </div>
+                    <!-- <div>                    
+                        <button ng-model="showFilters" ng-click="showFilters=!showFilters;fetchData()"> 
+                            <span ng-hide="showFilters">Use Filters</span>  
+                            <span ng-show="showFilters">Hide Filter Options</span>  
+                        </button>
+                        <div ng-show="showFilters">
+                            <select ng-model="selectedLevel" ng-options="x for x in levels"></select>
+                            <select ng-model="selectedLanguage" ng-options="x for x in languages"></select>
+                            <button ng-click="fetchData()">Search</button>
+                        </div>
+                    </div> -->
+                    <hr>
+                    <div class="ScrollStyle borderB">
+                        <div>
+                            <ul>
+                                <li dir-paginate="submission in requiredData | filter:query| itemsPerPage: 10" pagination-id="submission">
+                                    <div class="card">
+                                        <div>
+                                           <!-- <img class="left" src="https://images.alphacoders.com/511/511052.jpg" alt="Code Cafe" width="50" height="50"> -->
+                                           <img class="left" src="{{compiler_image[submission.language]}} " alt="Code Cafe" width="50" height="50">
+
+                                           <span style="font-size:20px; color:blue;">{{submission.title}}</span>
+                                           
+                                        </div><br>
+                                        <p class="test2">{{submission.source_code}}</p>
+                                        <div>Submission id : {{submission.id}}</div>
+                                        <div>Submission status : {{submission.compiler_status}}</div> {{submission.language}}                  
+                                    </div><br>
+                                </li>
+                            </ul>
+                            <dir-pagination-controls pagination-id="submission"></dir-pagination-controls>
+                        </div>                     
+                    </div>
+                </div>              
+                <br>
+
+
+
+
+
+                <div class="left w20 borderB">
+                   <div class="cardHead">Filter by Status</div>
+                   <div>
+                      <br>
+                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Accepted" value="Accepted" checked>Accepted<br>
+                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Skipped" value="Skipped">Skipped<br>
+                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Memory" value="Memory">Memory / Time limit exceeded<br>
+                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Runtime" value="Runtime" >Runtime / Compilation error<br>
+                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Wrong" value="Wrong">Wrong Answer<br><br>
+                   </div>
+                   <div class="cardHead">Statical Analysis</div>
+                   <ul>
+                      <li>Top 5 Languages Used:
+                         <ul>
+                            <li>C</li>
+                            <li>C++</li>
+                            <li>Python</li>
+                            <li>Java 7</li>
+                            <li>Java 8</li>
+                         </ul> 
+                      </li>
+                      <li>Top-2 Submissions Attempted:
+                         <ul>
+                            <li>1</li>
+                            <li>2</li>
+                         </ul> 
+                      </li>
+                      <li>Number of Submissions per level:
+                         <ul>
+                            <li>Easy</li>
+                            <li>Medium</li>
+                            <li>Hard</li>
+                         </ul> 
+                      </li>
+                      <li>Total Submissions</li>
+                   </ul>
+                </div>       
             </div>
-        </div>               
-               
-        <br>
-               
-
-
-            </div>
-
-
-
-
-            <div class="left w20 borderB">
-               <div class="cardHead">Filter by Status</div>
-               <div>
-                  <br>
-                  <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Accepted" value="Accepted" checked>Accepted<br>
-                  <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Skipped" value="Skipped">Skipped<br>
-                  <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Memory" value="Memory">Memory / Time limit exceeded<br>
-                  <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Runtime" value="Runtime" >Runtime / Compilation error<br>
-                  <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Wrong" value="Wrong">Wrong Answer<br><br>
-               </div>
-               <div class="cardHead">Statical Analysis</div>
-               <ul>
-                  <li>Top 5 Languages Used:
-                     <ul>
-                        <li>C</li>
-                        <li>C++</li>
-                        <li>Python</li>
-                        <li>Java 7</li>
-                        <li>Java 8</li>
-                     </ul> 
-                  </li>
-                  <li>Top-2 Submissions Attempted:
-                     <ul>
-                        <li>1</li>
-                        <li>2</li>
-                     </ul> 
-                  </li>
-                  <li>Number of Submissions per level:
-                     <ul>
-                        <li>Easy</li>
-                        <li>Medium</li>
-                        <li>Hard</li>
-                     </ul> 
-                  </li>
-                  <li>Total Submissions</li>
-               </ul>
-            </div>
-       
-        
-      </div>
-   </div>
-   <div ng-controller="OtherController" class="other-controller">
-          <small>this is in "OtherController"</small>
-          <div class="text-center">
-          <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
-          </div>
+        </div>
     </div>
 
-
- 
+    <div ng-controller="OtherController" class="other-controller">
+        <small>this is in "OtherController"</small>
+        <div class="text-center">
+            <dir-pagination-controls boundary-links="true" on-page-change="pageChangeHandler(newPageNumber)" template-url="dirPagination.tpl.html"></dir-pagination-controls>
+        </div>
+    </div> 
 
 </body>
 </html>
