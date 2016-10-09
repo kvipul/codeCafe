@@ -5,13 +5,15 @@ app.controller("myCtrl",function($scope, $http){
         $scope.requiredData = [];
         $scope.showFilters = 0;
         $scope.showProgress = 1;
-        $scope.searchDropdown = ["Title", "Level", "Language"];
-        $scope.queryBy = "Title";
+        $scope.searchDropdown = ["title", "level", "language"];
+        $scope.queryBy = "title";
 
         $scope.languagesFreq = [];
         $scope.topUsedLanguage = [];
         $scope.getTopUsedLanguage = 1;
         $scope.compiler_image = {};  
+
+        $scope.totalsubmissions = 0;
 
         var submissionData = [] ;      
 
@@ -157,6 +159,18 @@ app.controller("myCtrl",function($scope, $http){
             }
 
             $scope.getTopUsedLanguage = 0;
+
+            //load total submissions
+            var transaction1 = db.transaction("submissions", IDBTransaction.READ_WRITE);
+            var objectStore1 = transaction.objectStore("submissions");
+            var total = objectStore1.count();
+            total.onsuccess = function(){
+                $scope.totalsubmissions = total.result;
+            }
+
+            
+
+
             // console.log($scope.topUsedLanguage); 
         }
 
