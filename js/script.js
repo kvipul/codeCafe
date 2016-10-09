@@ -5,30 +5,36 @@ app.controller("myCtrl",function($scope, $http){
         $scope.requiredData = [];
         $scope.showFilters = 0;
         $scope.showProgress = 1;
-        $scope.searchDropdown = ["title", "level", "language"];
-        $scope.queryBy = "title";
+        $scope.searchDropdown = ["Title", "Level", "Language"];
+        $scope.queryBy = "Title";
 
         $scope.languagesFreq = [];
         $scope.topUsedLanguage = [];
         $scope.getTopUsedLanguage = 1;
-        
+        $scope.compiler_image = {};  
 
-        console.log($scope.showProgress,"progress initialization");
+        var submissionData = [] ;      
+
         document.getElementById("content").style.display = "none";
         $scope.status = "";
+        
+        //first fetch compiler images and languages frequency to display statistics in the Right half
+        fetchCompilerImageAndLanguageFrequency();
 
-        $scope.compiler_image = {};
-        $http.get('compiler_image.json').success(function(response){
-            console.log(response);
-            for (i in response){
-                lng = response[i].language;
-                $scope.compiler_image[response[i].language]= {icon: response[i].icon, freq:0};
-            }
-            activate();
-            // console.log(Object.keys($scope.compiler_image).length);
-            // console.log($scope.compiler_image);
-        });  
-
+        function fetchCompilerImageAndLanguageFrequency(){
+            $http.get('compiler_image.json').success(function(response){
+                console.log(response);
+                for (i in response){
+                    lng = response[i].language;
+                    $scope.compiler_image[response[i].language]= {icon: response[i].icon, freq:0};
+                }
+                activate();
+                // console.log(Object.keys($scope.compiler_image).length);
+                // console.log($scope.compiler_image);
+            }); 
+        }
+         
+        //Initialize db and check whether your browser supports indexeddb or not
         var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
         var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
         var db;
@@ -37,16 +43,15 @@ app.controller("myCtrl",function($scope, $http){
             window.alert("Your browser doesn't support a stable version of IndexedDB.")
         }
         
-        var submissionData = [] ;
-        //activate();
-
         function activate(){            
             initDb();
         }
 
+        //Load data from web api and store them into variable submissionData
         function loadData() {
             submissionData = [] ;
-            for (var i = 1; i <=10; i++) {   
+            //There are 1347 pages on this web api - change loop size to load large data
+            for (var i = 1; i <=30; i++) {   
                  URL = "http://hackerearth.0x10.info/api/ctz_coders?type=json&query=list_submissions&page="+i;  
                  $.ajax({url: URL, success: function(result){
                     submissionData = submissionData.concat(result["websites"]);
@@ -60,6 +65,7 @@ app.controller("myCtrl",function($scope, $http){
             cacheData();
         });
 
+        //Initilize new database if doesn't exist one and open it
         function initDb() {
             var request = indexedDB.open("newDatabase", 1);  
             request.onsuccess = function (evt) {
@@ -92,6 +98,7 @@ app.controller("myCtrl",function($scope, $http){
             };          
         }
 
+        //Caching of Data to local client maching: After fetching data from webapi store them into indexeddb database
         function cacheData(){
             var transaction = db.transaction("submissions", "readwrite");
             var objectStore = transaction.objectStore("submissions");
@@ -106,6 +113,7 @@ app.controller("myCtrl",function($scope, $http){
             }
         }
 
+        // fetch Statistic Data to display in the right half
         function loadStatistic() {
 
             for(i in $scope.compiler_image){
@@ -156,6 +164,8 @@ app.controller("myCtrl",function($scope, $http){
             var transaction = db.transaction("submissions", IDBTransaction.READ_WRITE);
             var objectStore = transaction.objectStore("submissions");
             //document.getElementById("loader").style.display = "none";
+
+            // fetch Statistic data only once when site is refreshed
             if($scope.getTopUsedLanguage){
                 loadStatistic();
             }                    
@@ -186,6 +196,7 @@ app.controller("myCtrl",function($scope, $http){
             //$scope.requiredData = tmp;
             };
 
+        // Delete cacheData stored on the client machine 
         $scope.deleteIndexedDb = function(){
             var req = indexedDB.deleteDatabase("newDatabase");
             req.onsuccess = function () {
@@ -200,6 +211,7 @@ app.controller("myCtrl",function($scope, $http){
             };
         }
 
+        //click on any html element
         function eventFire(el, etype){
             console.log("Radio clicked");
             if (el.fireEvent) {

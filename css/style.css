@@ -12,12 +12,28 @@ body {
 div, textarea, table, td, th, code, pre, samp {
     word-wrap: break-word;
 }
+
+.headContent {
+    padding-top: 0;
+    font-weight:900; 
+    background-color: #983939;
+}
+hr{
+    margin-top: 4px;
+    margin-bottom: 4px;
+}
 .left {
     float: left;
     
 }
+div.third {
+    opacity: 0.6;
+    filter: alpha(opacity=60); /* For IE8 and earlier */
+    font-style: italic;
+}
 .borderB{
 	border: 3px solid black;
+
 }
 .w80 {
     width: 80%;
@@ -49,17 +65,33 @@ div, textarea, table, td, th, code, pre, samp {
     border-radius: 5px;
     background-color: white;
     padding-top: 5px;
-    padding-left: 5px
+    padding-left: 5px;
+    padding-right: 5px;
 }
-p.test2 {
-  overflow: hidden;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  width: 90%;
+.test2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    width: 90%;
     height: 11em;
-    border: 1px solid #000000;
+    /*border: 4px solid #2018c1;*/
     word-wrap: break-word;
+
+    border-radius: 25px;
+    background: #73AD21;
+    padding: 20px; 
+    width: 200px;
+    color: white;
+    height: 150px;
+}
+.test{
+    border-radius: 25px;
+    background: #3a4363;
+    padding: 10px; 
+    width: 100px;
+    color: white;
+    height: 150px;
 }
 
 .card:hover {
