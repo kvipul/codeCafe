@@ -4,7 +4,7 @@
 
 About Code Cafe:
 	-Code Cafe let users search and list code submission information conveniently.
-	-Data is extracted from Web API to Local storage(client side storage) in form of json object
+	-Data is extracted from Web API and stored to Local storage(client side storage) in the form of json object
 
 Instruction to Run:
 	-To run the code on local your machine you just need to download the source code to your localhost folder
@@ -22,6 +22,7 @@ Instruction to Run:
 
 Technology I've used:
 	-I guess there is no need to use MVC architectural patterns because here we are talking about client side storage only
+	-Used Indexeddb database to store data on client side(user browser itselt)
 	-Used Languages: HTML, CSS, Javascript
 	-Used Libraries: Bootstrap, Angularjs, Jquery
 	-Third party libraries: dirPagination
