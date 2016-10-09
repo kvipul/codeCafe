@@ -7,8 +7,11 @@
         $scope.searchDropdown = ["title", "level", "language"];
         $scope.queryBy = "title";
 
+        $scope.languagesFreq = [];
         $scope.topUsedLanguage = [];
         $scope.getTopUsedLanguage = 1;
+        $scope.Analysis = ["Top 5 Languages Used", "Number of Submissions per level", "Total Submissions"];
+        $scope.selectAnalysis = "";
 
         console.log($scope.showProgress,"progress initialization");
         document.getElementById("content").style.display = "none";
@@ -23,13 +26,14 @@
             console.log(response);
             for (i in response){
                 lng = response[i].language;
-                $scope.compiler_image[response[i].language]= response[i].icon;
-                $scope.topUsedLanguage.push({language:response[i].language, count:0});
+                $scope.compiler_image[response[i].language]= {icon: response[i].icon, freq:0};
+                // $scope.topUsedLanguage.push(response[i].language);
+                $scope.topUsedLanguage[response[i].language] = 0;
 
             }
             activate();
+            console.log(Object.keys($scope.compiler_image).length);
             console.log($scope.compiler_image);
-            console.log($scope.topUsedLanguage);
 
         });
 
@@ -137,35 +141,78 @@
               });
             }
         }
+        // $scope.str = "" ;
+        function loadStatistic() {
+            for(i in $scope.compiler_image){
+                $scope.compiler_image[i].freq=0;
+                // console.log(i, $scope.compiler_image[i].freq);
+                        
+            }
+            var transaction = db.transaction("submissions", IDBTransaction.READ_WRITE);
+            var objectStore = transaction.objectStore("submissions");
+            // var count=0;
+            var index = objectStore.index("language");
+            // console.log(request);
+            // console.log($scope.topUsedLanguage[1].language); 
+            // $scope.languagesFreq = [];
+            // var request;
+            for (var i in $scope.compiler_image) { 
+                
+                // var count=0;
+                // console.log($scope.topUsedLanguage[i]);
+                // var str = i;
+
+                // console.log($scope.compiler_image["GNU C++11"][1]);
+
+                var request1 = index.openCursor(IDBKeyRange.only(i));
+                request1.onsuccess = function(evt){
+                    cursor = evt.target.result;
+                    if (cursor) {  
+                        // count+=1;       
+                        $scope.compiler_image[cursor.value.language].freq+=1;
+
+                        cursor.continue();  
+                    }  
+                    else { 
+                        // console.log(count);
+                        // $scope.languagesFreq.push(count);
+                        // $scope.languagesFreq.push({language:str, count:count});
+                        count=0;
+                        //$scope.topUsedLanguage.push({language:response[i].language, languageFreq:1});
+                        // $scope.topUsedLanguage[i].count=count;
+                        // $scope.topUsedLanguage[i].count=count;
+
+                        // console.log($scope.languagesFreq);
+
+                        // $scope.requiredData = tmp;
+                        // console.log(window.JSON.parse(JSON.stringify(myFirstObject))); 
+                        // console.log($scope.topUsedLanguage[i].language);   
+                        console.log("No more entries!");  
+                        // eventFire(document.getElementById($scope.status), 'click');
+                    }  
+
+                }
+                transaction.oncomplete = function(){
+                    // z=0;
+                    for(i in $scope.compiler_image){
+                        console.log(i, $scope.compiler_image[i].freq);                        
+                    }
+                }
+
+
+
+
+            }
+            $scope.getTopUsedLanguage = 0;
+            console.log($scope.topUsedLanguage); 
+
+        }
          $scope.fetchData = function () {
                     var transaction = db.transaction("submissions", IDBTransaction.READ_WRITE);
                     var objectStore = transaction.objectStore("submissions");
                     //document.getElementById("loader").style.display = "none";
                     if($scope.getTopUsedLanguage){
-                        var count=0;
-                        var index = objectStore.index("language");
-                        // console.log(request);
-                        for(i in $scope.topUsedLanguage){
-                            count=0;
-                            request = index.openCursor(IDBKeyRange.only($scope.topUsedLanguage[i].language));
-                            request.onsuccess = function(evt){
-                                cursor = evt.target.result;
-                                if (cursor) {  
-                                    $scope.topUsedLanguage[i].count+=1;                         
-                                    cursor.continue();  
-                                }  
-                                else {  
-                                    // $scope.requiredData = tmp;
-                                    // console.log(window.JSON.parse(JSON.stringify(myFirstObject))); 
-                                    console.log( $scope.topUsedLanguage[i].count);   
-                                    console.log("No more entries!");  
-                                    eventFire(document.getElementById($scope.status), 'click');
-                                }  
-
-                            }
-
-                        }
-                        $scope.getTopUsedLanguage = 0;
+                        loadStatistic();
                     }
  
                     
