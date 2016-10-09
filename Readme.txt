@@ -21,7 +21,7 @@ Instruction to Run:
 
 
 Technology I've used:
-	-I guess there is no need to use MVC architectural patterns because here I'm using client side storage
+	-I guess there is no need to use MVC architectural patterns because here we are talking about client side storage only
 	-Used Languages: HTML, CSS, Javascript
 	-Used Libraries: Bootstrap, Angularjs, Jquery
 	-Third party libraries: dirPagination
