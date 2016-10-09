@@ -75,32 +75,32 @@
 
 
                 <div class="left w20 borderB">
-                   <div class="cardHead">Filter by Status</div>
-                   <div>
-                      <br>
-                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Accepted" value="Accepted" checked>Accepted<br>
-                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Skipped" value="Skipped">Skipped<br>
-                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Memory" value="Memory">Memory / Time limit exceeded<br>
-                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Runtime" value="Runtime" >Runtime / Compilation error<br>
-                      <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Wrong" value="Wrong">Wrong Answer<br><br>
-                   </div>
-                   <div class="cardHead">Statical Analysis</div>
+                <div class="cardHead">Filter by Status</div>
+                <div>
+                    <br>
+                    <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Accepted" value="Accepted" checked>Accepted<br>
+                    <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Skipped" value="Skipped">Skipped<br>
+                    <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Memory" value="Memory">Memory / Time limit exceeded<br>
+                    <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Runtime" value="Runtime" >Runtime / Compilation error<br>
+                    <input type="radio" ng-model="status" name="status" ng-change="fetchData()" id="Wrong" value="Wrong">Wrong Answer<br><br>
+                </div>
+                <div class="cardHead">Statical Analysis</div>
                    <!-- <select ng-model="selectAnalysis" ng-options="x for x in Analysis" value="x" ng-change="loadStatistic(x)"></select> -->
-                   <ul>
-                      <li>Top 5 Languages Used:
-                         <ul>
-                            <li ng-repeat="(key, value) in compiler_image| orderBy:value.freq   " ng-if="value.freq!=0">{{key}}: {{value.freq}}</li>
-                         </ul> 
-                      </li>
-                      <li>Number of Submissions per level:
-                         <ul>
+                <ul>
+                    <li>Top 5 Languages Used:
+                        <ul>
+                        <li ng-repeat="(key, value) in compiler_image| orderBy:value.freq   " ng-if="value.freq!=0">{{key}}: {{value.freq}}</li>
+                        </ul> 
+                    </li>
+                    <li>Number of Submissions per level:
+                        <ul>
                             <li>Easy</li>
                             <li>Medium</li>
                             <li>Hard</li>
-                         </ul> 
-                      </li>
-                      <li>Total Submissions</li>
-                   </ul>
+                        </ul> 
+                    </li>
+                    <li>Total Submissions</li>
+                </ul>
                 </div>       
             </div>
         </div>
