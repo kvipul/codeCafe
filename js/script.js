@@ -53,7 +53,7 @@ app.controller("myCtrl",function($scope, $http){
         function loadData() {
             submissionData = [] ;
             //There are 1347 pages on this web api - change loop size to load large data
-            for (var i = 1; i <=30; i++) {   
+            for (var i = 1; i <=8; i++) {   
                  URL = "http://hackerearth.0x10.info/api/ctz_coders?type=json&query=list_submissions&page="+i;  
                  $.ajax({url: URL, success: function(result){
                     submissionData = submissionData.concat(result["websites"]);

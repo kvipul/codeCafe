@@ -2,12 +2,13 @@
 <html lang="en-US">
 <head>
     <title>Code Cafe</title>
+    <!-- include jquery -->
+    <script data-require="jquery@*" data-semver="2.0.3" src="https://code.jquery.com/jquery-2.0.3.min.js"></script>
     <!-- include bootstrape -->
     <link data-require="bootstrap-css@3.1.1" data-semver="3.1.1" rel="stylesheet" href="css/bootstrap.min.css" />
     <!-- include angularjs -->
     <script data-require="angular.js@1.3.0" data-semver="1.3.0" src="https://code.angularjs.org/1.3.0/angular.js"></script>
-    <!-- include jquery -->
-    <script data-require="jquery@*" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+    
     <script data-require="bootstrap@3.1.1" data-semver="3.1.1" src="js/bootstrap.min.js"></script>
 
     <!-- include local css file -->
