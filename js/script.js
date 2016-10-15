@@ -31,12 +31,12 @@ app.controller("myCtrl",function($scope, $http){
                     $scope.compiler_image[response[i].language]= {icon: response[i].icon, freq:0};
                 }
                 activate();
-                // console.log(Object.keys($scope.compiler_image).length);
+                // console.log(Object.keys($scope.compiler_image));
                 // console.log($scope.compiler_image);
             }); 
         }
          
-        //Initialize db and check whether your browser supports indexeddb or not
+        // Initialize db and check whether your browser supports indexeddb or not
         var indexedDB = window.indexedDB || window.webkitIndexedDB || window.mozIndexedDB || window.msIndexedDB;
         var IDBTransaction = window.IDBTransaction || window.webkitIDBTransaction;
         var db;
