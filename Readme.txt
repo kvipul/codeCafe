@@ -28,6 +28,6 @@ Technology I've used:
 	-Third party libraries: dirPagination
 
 References:
-	-Used Web API provided hackerearth
+	-Used Web API provided by hackerearth
 	-dirPagination.js library to paginate data by michaelbromley
 	
